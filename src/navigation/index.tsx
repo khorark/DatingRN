@@ -4,18 +4,34 @@ import { AuthScreenNav } from '../screens/AuthScreen/AuthScreen.nav';
 import { CardsScreenNav } from '../screens/CardsScreen/CardScreen.nav';
 import CardsScreen from '../screens/CardsScreen/CardsScreen';
 import { Screens } from './screens';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { ProfileScreenNav } from '../screens/ProfileScreen/ProfileScreen.nav';
+import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 
-type RootStackParamList = AuthScreenNav & CardsScreenNav;
+type RootStackParamList = AuthScreenNav & CardsScreenNav & ProfileScreenNav;
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
+const AppTab = createBottomTabNavigator();
 
-const AppNavigationContainer = (): JSX.Element => {
-  return (
-    <AppStack.Navigator initialRouteName={Screens.AuthScreen}>
-      <AppStack.Screen name={Screens.AuthScreen} component={AuthScreen} />
-      <AppStack.Screen name={Screens.CardsScreen} component={CardsScreen} />
-    </AppStack.Navigator>
-  );
+type Props = {
+  isSignIn: boolean;
+};
+
+const AppNavigationContainer = ({ isSignIn }: Props): JSX.Element => {
+  if (isSignIn) {
+    return (
+      <AppTab.Navigator>
+        <AppStack.Screen name={Screens.CardsScreen} component={CardsScreen} />
+        <AppStack.Screen name={Screens.ProfileScreen} component={ProfileScreen} />
+      </AppTab.Navigator>
+    );
+  } else {
+    return (
+      <AppStack.Navigator initialRouteName={Screens.AuthScreen}>
+        <AppStack.Screen name={Screens.AuthScreen} component={AuthScreen} />
+      </AppStack.Navigator>
+    );
+  }
 };
 
 export default AppNavigationContainer;
