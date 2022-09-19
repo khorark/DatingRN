@@ -1,29 +1,38 @@
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
-import React from 'react';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import Card from './components/Card';
 
-const CARDS = {
-  1: {
+const CARDS = [
+  {
+    id: 1,
     image: require('src/assets/images/1.jpg'),
-    size: { width: 450, height: 589 },
   },
-  2: {
+  {
+    id: 2,
     image: require('src/assets/images/2.jpg'),
-    size: { width: 450, height: 529 },
   },
-  3: {
+  {
+    id: 3,
     image: require('src/assets/images/3.jpg'),
-    size: { width: 450, height: 566 },
   },
-  4: {
+  {
+    id: 4,
     image: require('src/assets/images/4.jpg'),
-    size: { width: 450, height: 573 },
   },
-};
+];
 
 const CardsScreen = () => {
+  const [cards, setcards] = useState(CARDS);
+  const onSwipe = useCallback((id: number) => {
+    setcards((state) => [state[state.length - 1], ...state.slice(0, 3)]);
+    console.log('id', id);
+  }, []);
+
   return (
-    <SafeAreaView>
-      <Text>CardsScreen</Text>
+    <SafeAreaView style={styles.container}>
+      {cards.map(({ id, image }, idx) => {
+        return <Card key={id} id={id} idx={idx} image={image} onSwipe={onSwipe} />;
+      })}
     </SafeAreaView>
   );
 };
@@ -33,6 +42,7 @@ export default CardsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'yellow',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
