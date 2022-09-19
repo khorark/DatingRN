@@ -23,15 +23,14 @@ const CARDS = [
 
 const CardsScreen = () => {
   const [cards, setcards] = useState(CARDS);
-  const onSwipe = useCallback((id: number) => {
+  const onSwipe = useCallback(() => {
     setcards((state) => [state[state.length - 1], ...state.slice(0, 3)]);
-    console.log('id', id);
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       {cards.map(({ id, image }, idx) => {
-        return <Card key={id} id={id} idx={idx} image={image} onSwipe={onSwipe} />;
+        return <Card key={id} idx={idx} image={image} onSwipe={onSwipe} />;
       })}
     </SafeAreaView>
   );

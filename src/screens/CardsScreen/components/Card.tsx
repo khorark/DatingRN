@@ -14,13 +14,12 @@ import Animated, {
 const { width: ScreenWidth } = Dimensions.get('window');
 
 type Props = {
-  id: number;
   idx: number;
   image: ImageSourcePropType;
-  onSwipe: (id: number) => void;
+  onSwipe: () => void;
 };
 
-const Card: FC<Props> = ({ id, idx, image, onSwipe }) => {
+const Card: FC<Props> = ({ idx, image, onSwipe }) => {
   const offset = useSharedValue(0);
   const animatedStyles = useAnimatedStyle(() => {
     const rotateInterpolate = interpolate(offset.value / ScreenWidth, [0, 1], [0, 15]);
@@ -50,7 +49,7 @@ const Card: FC<Props> = ({ id, idx, image, onSwipe }) => {
       start.value = 0;
       offset.value = withTiming(toValue, { duration: 300, easing: Easing.linear }, (finished) => {
         if (finished && isSwipe) {
-          runOnJS(onSwipe)(id);
+          runOnJS(onSwipe)();
           offset.value = withSpring(0);
         }
       });
