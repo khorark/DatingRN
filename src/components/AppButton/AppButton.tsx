@@ -1,5 +1,6 @@
-import { Pressable, PressableProps, StyleSheet, Text } from 'react-native';
+import { Pressable, PressableProps, Text } from 'react-native';
 import React, { memo } from 'react';
+import styles from './AppButton.styles';
 
 type Props = {
   title: string;
@@ -12,19 +13,4 @@ export const AppButton = memo(({ title, isError, ...props }: Props) => {
       <Text style={styles.buttonTitle}>{isError ? 'Auth error =(' : title}</Text>
     </Pressable>
   );
-});
-
-const styles = StyleSheet.create({
-  button: {
-    height: 54,
-    borderRadius: 8,
-    marginBottom: 24,
-    justifyContent: 'center',
-  },
-  buttonTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-    textAlign: 'center',
-  },
 });
