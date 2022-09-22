@@ -1,11 +1,14 @@
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import { storage, STORAGE_KEYS } from '../storage';
 import { AppButton, AppInput } from '../../components';
+import { observer } from 'mobx-react';
+import { useAppStore } from 'src/stores';
 
 const AuthScreen = () => {
-  const [login, setLogin] = useState(storage.getString(STORAGE_KEYS.LOGIN));
+  const { auth: authStore } = useAppStore();
+  const [login, setLogin] = useState(authStore.userId);
   const [password, setPassword] = useState('');
   const [user, setUser] = useState<Record<string, any>>();
 
@@ -14,12 +17,15 @@ const AuthScreen = () => {
     setUser(user);
   };
 
+  console.log('authStore.userId', authStore.userId);
+
   const handlePress = async () => {
     console.log('login', login);
     console.log('password', password);
     // const user = await auth().signInAnonymously();
     console.log('user', user);
     if (login) {
+      authStore.setUserId(login);
       storage.set(STORAGE_KEYS.LOGIN, login);
     }
   };
@@ -56,7 +62,7 @@ const AuthScreen = () => {
   );
 };
 
-export default AuthScreen;
+export default observer(AuthScreen);
 
 const styles = StyleSheet.create({
   main: {
