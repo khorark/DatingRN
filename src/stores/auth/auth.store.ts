@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree';
-import auth from '@react-native-firebase/auth';
 import { flow } from 'src/stores/types/store.types';
+import { withEnv } from 'src/stores/withStores';
 
 export const AuthStore = types
   .model({
@@ -12,6 +12,7 @@ export const AuthStore = types
       return Boolean(self.userId);
     },
   }))
+  .extend(withEnv)
   .actions((self) => ({
     resetError() {
       self.isError = false;
@@ -21,8 +22,7 @@ export const AuthStore = types
     login: flow(function* ({ login, password }: LoginProps) {
       try {
         if (login.toLocaleLowerCase() === 'bob' && password.toLocaleLowerCase() === '123456') {
-          const user = yield auth().signInAnonymously();
-          self.userId = user.user.uid;
+          self.userId = yield self.storeEnv.appApi.authApi.login();
         } else {
           self.isError = true;
         }
