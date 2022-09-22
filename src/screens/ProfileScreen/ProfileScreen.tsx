@@ -2,6 +2,8 @@ import { Image, Pressable, SafeAreaView, Text, View } from 'react-native';
 import React from 'react';
 import styles from './ProfileScreen.styles';
 import { useProfileScreen } from 'src/screens/ProfileScreen/ProfileScreen.hook';
+import { AppButton } from 'src/components';
+import { observer } from 'mobx-react-lite';
 
 const ProfileScreen = () => {
   const h = useProfileScreen();
@@ -31,8 +33,9 @@ const ProfileScreen = () => {
           <Text style={styles.fieldTitle}>LinkedIn</Text>
         </Pressable>
       </View>
+      <AppButton title='Log out' style={styles.button} onPress={h.handleLogout} />
     </SafeAreaView>
   );
 };
 
-export default ProfileScreen;
+export default observer(ProfileScreen);

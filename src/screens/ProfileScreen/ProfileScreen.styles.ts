@@ -20,6 +20,7 @@ export default StyleSheet.create({
     marginTop: 15,
   },
   fieldsContainer: {
+    flex: 1,
     flexDirection: 'row',
   },
   field: {
@@ -53,5 +54,8 @@ export default StyleSheet.create({
     width: 30,
     aspectRatio: 1,
     marginRight: 10,
+  },
+  button: {
+    marginHorizontal: 25,
   },
 });
