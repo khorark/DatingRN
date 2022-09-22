@@ -28,7 +28,7 @@ const AppNavigationContainer = ({ isSignIn }: Props): JSX.Element => {
   } else {
     return (
       <AppStack.Navigator initialRouteName={Screens.AuthScreen}>
-        <AppStack.Screen name={Screens.AuthScreen} component={AuthScreen} />
+        <AppStack.Screen name={Screens.AuthScreen} component={AuthScreen} options={{ headerShown: false }} />
       </AppStack.Navigator>
     );
   }

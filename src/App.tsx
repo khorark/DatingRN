@@ -6,7 +6,7 @@ import AppNavigationContainer from './navigation';
 const App = () => {
   return (
     <NavigationContainer>
-      <AppNavigationContainer isSignIn={true} />
+      <AppNavigationContainer isSignIn={false} />
     </NavigationContainer>
   );
 };
