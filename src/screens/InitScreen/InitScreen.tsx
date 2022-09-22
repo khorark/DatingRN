@@ -1,11 +1,11 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { useAppStore } from 'src/stores';
 import AppNavigationContainer from 'src/navigation';
+import { useInitScreen } from 'src/screens/InitScreen/InitScreen.hook';
 
 const InitScreen = () => {
-  const { auth } = useAppStore();
-  return <AppNavigationContainer isSignIn={auth.isSignIn} />;
+  const h = useInitScreen();
+  return <AppNavigationContainer isSignIn={h.isSignIn} />;
 };
 
 export default observer(InitScreen);

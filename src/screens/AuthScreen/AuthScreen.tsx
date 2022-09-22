@@ -1,31 +1,12 @@
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import { KeyboardAvoidingView, SafeAreaView, Text, View } from 'react-native';
+import React from 'react';
 import { AppButton, AppInput } from '../../components';
 import { observer } from 'mobx-react';
-import { useAppStore } from 'src/stores';
+import { useAuthScreen } from 'src/screens/AuthScreen/AuthScreen.hook';
+import styles from './AuthScreen.styles';
 
 const AuthScreen = () => {
-  const { auth } = useAppStore();
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handlePress = useCallback(() => {
-    auth.login({ login, password });
-  }, [login, password]);
-
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-
-    if (auth.isError) {
-      timer = setTimeout(() => {
-        auth.resetError();
-      }, 2000);
-    }
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [auth.isError]);
+  const h = useAuthScreen();
 
   return (
     <SafeAreaView style={styles.main}>
@@ -34,47 +15,24 @@ const AuthScreen = () => {
         <View style={styles.form}>
           <AppInput
             title='Login'
-            value={login}
+            value={h.login}
             returnKeyType='next'
             textContentType='username'
-            onChangeText={setLogin}
+            onChangeText={h.setLogin}
           />
           <AppInput
             title='Password'
-            value={password}
+            value={h.password}
             secureTextEntry={true}
             textContentType={'password'}
-            onChangeText={setPassword}
+            onChangeText={h.setPassword}
           />
         </View>
         <View style={styles.spacer} />
-        <AppButton title='Log in' isError={auth.isError} onPress={handlePress} />
+        <AppButton title='Log in' isError={h.isError} onPress={h.handlePress} />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 export default observer(AuthScreen);
-
-const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 30,
-  },
-  title: {
-    fontSize: 40,
-    lineHeight: 49,
-    color: '#10142D',
-    textAlign: 'center',
-  },
-  form: {
-    marginTop: 70,
-  },
-  spacer: {
-    flex: 1,
-  },
-});
