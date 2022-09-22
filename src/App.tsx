@@ -1,13 +1,17 @@
 import React from 'react';
+import { Provider } from 'mobx-react';
 
 import { NavigationContainer } from '@react-navigation/native';
-import AppNavigationContainer from './navigation';
+import { appStore } from 'src/stores';
+import InitScreen from 'src/screens/InitScreen/InitScreen';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <AppNavigationContainer isSignIn={false} />
-    </NavigationContainer>
+    <Provider {...appStore}>
+      <NavigationContainer>
+        <InitScreen />
+      </NavigationContainer>
+    </Provider>
   );
 };
 

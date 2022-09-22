@@ -1,39 +1,31 @@
 import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import auth from '@react-native-firebase/auth';
-import { storage, STORAGE_KEYS } from '../storage';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AppButton, AppInput } from '../../components';
 import { observer } from 'mobx-react';
 import { useAppStore } from 'src/stores';
 
 const AuthScreen = () => {
-  const { auth: authStore } = useAppStore();
-  const [login, setLogin] = useState(authStore.userId);
+  const { auth } = useAppStore();
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState<Record<string, any>>();
 
-  // Handle user state changes
-  const onAuthStateChanged = (user: any) => {
-    setUser(user);
-  };
-
-  console.log('authStore.userId', authStore.userId);
-
-  const handlePress = async () => {
-    console.log('login', login);
-    console.log('password', password);
-    // const user = await auth().signInAnonymously();
-    console.log('user', user);
-    if (login) {
-      authStore.setUserId(login);
-      storage.set(STORAGE_KEYS.LOGIN, login);
-    }
-  };
+  const handlePress = useCallback(() => {
+    auth.login({ login, password });
+  }, [login, password]);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+    let timer: ReturnType<typeof setTimeout>;
+
+    if (auth.isError) {
+      timer = setTimeout(() => {
+        auth.resetError();
+      }, 2000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [auth.isError]);
 
   return (
     <SafeAreaView style={styles.main}>
@@ -56,7 +48,7 @@ const AuthScreen = () => {
           />
         </View>
         <View style={styles.spacer} />
-        <AppButton title='Log in' onPress={handlePress} />
+        <AppButton title='Log in' isError={auth.isError} onPress={handlePress} />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

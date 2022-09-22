@@ -8,7 +8,7 @@ const RootStore = types.model('RootStore', {
   auth: AuthStore,
 });
 
-const appStore = RootStore.create({ auth: {} }, storeEnv);
+export const appStore = RootStore.create({ auth: {} }, storeEnv);
 
 export const useAppStore = () => {
   const store = useMemo(() => appStore, [appStore]);
