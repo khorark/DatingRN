@@ -7,8 +7,10 @@ import { Screens } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ProfileScreenNav } from '../screens/ProfileScreen/ProfileScreen.nav';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
+import PhotoListScreen from 'src/screens/PhotoListScreen/PhotoListScreen';
+import { PhotoListScreenNav } from 'src/screens/PhotoListScreen/PhotoListScreen.nav';
 
-type RootStackParamList = AuthScreenNav & CardsScreenNav & ProfileScreenNav;
+type RootStackParamList = AuthScreenNav & CardsScreenNav & PhotoListScreenNav & ProfileScreenNav;
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const AppTab = createBottomTabNavigator();
@@ -22,6 +24,7 @@ const AppNavigationContainer = ({ isSignIn }: Props): JSX.Element => {
     return (
       <AppTab.Navigator>
         <AppStack.Screen name={Screens.CardsScreen} component={CardsScreen} />
+        <AppStack.Screen name={Screens.PhotoListScreen} component={PhotoListScreen} />
         <AppStack.Screen name={Screens.ProfileScreen} component={ProfileScreen} />
       </AppTab.Navigator>
     );
